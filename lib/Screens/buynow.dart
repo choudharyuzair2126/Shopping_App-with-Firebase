@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:csc_picker/csc_picker.dart';
 
 class BuyNow extends StatefulWidget {
-  const BuyNow({super.key});
+  const BuyNow({Key? key}) : super(key: key);
 
   @override
   _BuyNowState createState() => _BuyNowState();
@@ -14,6 +14,28 @@ class _BuyNowState extends State<BuyNow> {
   String countryValue = "";
   String stateValue = "";
   String cityValue = "";
+  String address = "";
+
+  Future<void> sendOrder(String address) async {
+    try {
+      final url = Uri.parse('https://your-vercel-app.vercel.app/api/sendEmail');
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({'address': address}),
+      );
+
+      if (response.statusCode == 200) {
+        print('Email sent successfully');
+      } else {
+        print('Failed to send email');
+      }
+    } catch (error) {
+      print('Error sending order: $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,42 +103,24 @@ class _BuyNowState extends State<BuyNow> {
                 },
               ),
               TextButton(
-                onPressed: () async {
-                  String address = "$cityValue, $stateValue, $countryValue";
-                  await sendEmail(address);
+                onPressed: () {
+                  setState(() {
+                    address = "$cityValue, $stateValue, $countryValue";
+                  });
                 },
-                child: const Text("Send Email"),
+                child: const Text("Print Data"),
+              ),
+              Text(address),
+              ElevatedButton(
+                onPressed: () {
+                  sendOrder(address);
+                },
+                child: const Text("Buy Now"),
               ),
             ],
           ),
         ),
       ),
     );
-  }
-
-  Future<void> sendEmail(String address) async {
-    try {
-      final response = await http.post(
-        Uri.parse(
-            'https://app-q8eg2btkd-uzairs-projects-8123cd52.vercel.app/api/sendEmail'), // Replace with your serverless function URL
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          'address': address,
-        }),
-      );
-
-      if (response.statusCode == 200) {
-        print('Email sent successfully');
-        // Handle success, e.g., show a success message
-      } else {
-        print('Failed to send email. Status code: ${response.statusCode}');
-        // Handle error, e.g., show an error message
-      }
-    } catch (e) {
-      print('Error sending email: $e');
-      // Handle error, e.g., show an error message
-    }
   }
 }
