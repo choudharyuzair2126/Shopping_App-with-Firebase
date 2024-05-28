@@ -9,15 +9,15 @@ module.exports = async (req, res) => {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'uzairch296@gmail.com', // Replace with your email
+      user: 'choudhary14949@gmail.com', // Replace with your email
       pass: 'owck nutj stnm ikth' // Replace with your email password or app-specific password
     }
   });
 
   // Email content
   const mailOptions = {
-    from: 'uzairch296@gmail.com', // Replace with your email
-    to: 'choudhary14949@gmail.com', // Replace with your recipient email
+    from: 'choudhary14949@gmail.com', // Replace with your email
+    to: 'uzairch296@gmail.com', // Replace with your recipient email
     subject: 'New Order Received',
     text: `New order placed!\nAddress: ${address}`
   };
