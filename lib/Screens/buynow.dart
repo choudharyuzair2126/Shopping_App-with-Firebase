@@ -18,7 +18,8 @@ class _BuyNowState extends State<BuyNow> {
 
   Future<void> sendOrder(String address) async {
     try {
-      final url = Uri.parse('https://your-vercel-app.vercel.app/api/sendEmail');
+      final url = Uri.parse(
+          'https://app-ddc2dxbgf-uzairs-projects-8123cd52.vercel.app/api/sendEmail');
       final response = await http.post(
         url,
         headers: {
