@@ -81,6 +81,14 @@ class _BuyNowState extends State<BuyNow> {
                 },
               ),
               TextButton(
+                onPressed: () {
+                  setState(() {
+                    String address = "$cityValue, $stateValue, $countryValue";
+                  });
+                },
+                child: const Text("Print Data"),
+              ),
+              TextButton(
                 onPressed: () async {
                   String address = "$cityValue, $stateValue, $countryValue";
                   await sendEmail(address);
@@ -98,7 +106,7 @@ class _BuyNowState extends State<BuyNow> {
     try {
       final response = await http.post(
         Uri.parse(
-            "https://app-1j15a74p4-uzairs-projects-8123cd52.vercel.app/api/sendEmail"),
+            "https://app-8oixswlcu-uzairs-projects-8123cd52.vercel.app/api/sendEmail"),
         headers: {
           'Content-Type': 'application/json',
         },
