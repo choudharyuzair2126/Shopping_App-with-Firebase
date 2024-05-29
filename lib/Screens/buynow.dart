@@ -143,8 +143,8 @@ class BuyNowState extends State<BuyNow> {
   }
 
   void sendEmail() async {
-    var url =
-        Uri.parse('https://earnest-pavlova-83413c.netlify.app/api/sendEmail');
+    var url = Uri.parse(
+        'https://earnest-pavlova-83413c.netlify.app/.netlify/functions/sendEmail');
     var response = await http.post(
       url,
       body: {

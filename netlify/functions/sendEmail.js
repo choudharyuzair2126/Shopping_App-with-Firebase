@@ -1,45 +1,47 @@
+const functions = require('firebase-functions');
+const admin = require('firebase-admin');
 const nodemailer = require('nodemailer');
 
-exports.handler = async function(event, context) {
-  try {
-    const { address } = JSON.parse(event.body);
+admin.initializeApp();
 
-    if (!address) {
-      throw new Error('Address is missing in the request body');
-    }
+exports.sendEmail = functions.https.onRequest(async (req, res) => {
+  const { address, productName, productPrice, productDescription } = req.body;
 
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: 'choudhary14949@gmail.com',
-        pass: 'xwjj hrqr zfzs ajyl',
-      },
-    });
+  // Validate request
+  if (!address || !productName || !productPrice || !productDescription) {
+    return res.status(400).send('Missing parameters');
+  }
 
-    const mailOptions = {
-      from: 'choudhary14949@gmail.com',
-      to: 'uzair2126@proton.me',
-      subject: 'New Order Received',
-      text: `
+  // Create reusable transporter object using the default SMTP transport
+  let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'choudhary14949@gmail.com',
+      pass: 'xwjj hrqr zfzs ajyl',
+    },
+  });
+
+  // Setup email data
+  let mailOptions = {
+    from: 'choudhary14949@gmail.com',
+    to: 'uzair2126@proton.me', // Change to your email
+    subject: 'New Order Details',
+    text: `
       New order details:
       Address: ${address}
       Product Name: ${productName}
       Product Price: ${productPrice}
       Product Description: ${productDescription}
     `,
-    };
+  };
 
-    const info = await transporter.sendMail(mailOptions);
-    console.log('Email sent successfully:', info);
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ message: 'Email sent successfully' }),
-    };
+  // Send email
+  try {
+    let info = await transporter.sendMail(mailOptions);
+    console.log('Email sent: ' + info.response);
+    res.status(200).send('Email sent successfully');
   } catch (error) {
-    console.error('Error sending email:', error.message);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: `Failed to send email: ${error.message}` }),
-    };
+    console.error('Error sending email:', error);
+    res.status(500).send('Error sending email');
   }
-};
+});
