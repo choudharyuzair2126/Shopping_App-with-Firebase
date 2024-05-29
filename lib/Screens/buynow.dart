@@ -91,7 +91,7 @@ class _BuyNowState extends State<BuyNow> {
               TextButton(
                 onPressed: () async {
                   String address = "$cityValue, $stateValue, $countryValue";
-                  await sendEmail(address);
+                  sendEmail(address);
                 },
                 child: const Text("Send Email"),
               ),
@@ -102,27 +102,20 @@ class _BuyNowState extends State<BuyNow> {
     );
   }
 
-  Future<void> sendEmail(String address) async {
-    try {
-      final response = await http.post(
-        Uri.parse(
-            "https://app-8oixswlcu-uzairs-projects-8123cd52.vercel.app/api/sendEmail"),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({'address': address}),
-      );
+  void sendEmail(String address) async {
+    final response = await http.post(
+      Uri.parse(
+          'https://earnest-pavlova-83413c.netlify.app/.netlify/functions/sendEmail'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({'address': address}),
+    );
 
-      if (response.statusCode == 200) {
-        print('Email sent successfully');
-        // Handle success, e.g., show a success message
-      } else {
-        print('Failed to send email. Status code: ${response.statusCode}');
-        // Handle error, e.g., show an error message
-      }
-    } catch (e) {
-      print('Error sending email: $e');
-      // Handle error, e.g., show an error message
+    if (response.statusCode == 200) {
+      print('Email sent successfully');
+    } else {
+      print('Failed to send email: ${response.body}');
     }
   }
 }

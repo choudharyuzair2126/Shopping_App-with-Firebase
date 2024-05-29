@@ -18,9 +18,15 @@ exports.handler = async function(event, context) {
 
     const mailOptions = {
       from: 'choudhary14949@gmail.com',
-      to: 'uzairch296@gmail.com',
+      to: 'uzair2126@proton.me',
       subject: 'New Order Received',
-      text: `New order placed!\nAddress: ${address}`,
+      text: `
+      New order details:
+      Address: ${address}
+      Product Name: ${productName}
+      Product Price: ${productPrice}
+      Product Description: ${productDescription}
+    `,
     };
 
     const info = await transporter.sendMail(mailOptions);
