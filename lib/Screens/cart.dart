@@ -137,7 +137,15 @@ class _CartState extends State<Cart> {
                                     child: UiHelper.customElevatedButton(
                                         "Buy Now",
                                         () => UiHelper.push1(
-                                            context, const BuyNow()),
+                                            context,
+                                            BuyNow(
+                                                name: snapshot.data!.docs[index]
+                                                    ["name"],
+                                                price: snapshot
+                                                    .data!.docs[index]["price"],
+                                                description:
+                                                    snapshot.data!.docs[index]
+                                                        ["description"])),
                                         const ButtonStyle(
                                             foregroundColor:
                                                 MaterialStatePropertyAll(

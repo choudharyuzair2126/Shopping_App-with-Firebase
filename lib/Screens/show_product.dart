@@ -177,7 +177,12 @@ class _ShowProductState extends State<ShowProduct> {
               SizedBox(
                   width: double.infinity,
                   child: UiHelper.customElevatedButton('Buy Now', () {
-                    UiHelper.push1(context, const BuyNow());
+                    UiHelper.push1(
+                        context,
+                        BuyNow(
+                            name: widget.name,
+                            price: widget.price,
+                            description: widget.description));
                   },
                       const ButtonStyle(
                           foregroundColor:

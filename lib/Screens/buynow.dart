@@ -1,19 +1,40 @@
-import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:csc_picker/csc_picker.dart';
 
 class BuyNow extends StatefulWidget {
-  const BuyNow({Key? key}) : super(key: key);
+  final name;
+  final price;
+  final description;
+  const BuyNow(
+      {super.key,
+      required this.name,
+      required this.price,
+      required this.description});
 
   @override
-  _BuyNowState createState() => _BuyNowState();
+  BuyNowState createState() => BuyNowState();
 }
 
-class _BuyNowState extends State<BuyNow> {
+class BuyNowState extends State<BuyNow> {
   String countryValue = "";
   String stateValue = "";
   String cityValue = "";
+  String address = "";
+
+  // Product details
+
+  double productPrice = 0;
+  String productDescription = '';
+  String productName = '';
+  @override
+  void initState() {
+    super.initState();
+    productPrice = widget.price;
+    productDescription = widget.description;
+    productName = widget.name;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,17 +104,17 @@ class _BuyNowState extends State<BuyNow> {
               TextButton(
                 onPressed: () {
                   setState(() {
-                    String address = "$cityValue, $stateValue, $countryValue";
+                    address = "$cityValue, $stateValue, $countryValue";
                   });
                 },
                 child: const Text("Print Data"),
               ),
-              TextButton(
-                onPressed: () async {
-                  String address = "$cityValue, $stateValue, $countryValue";
-                  sendEmail(address);
+              Text(address),
+              ElevatedButton(
+                onPressed: () {
+                  _placeOrder();
                 },
-                child: const Text("Send Email"),
+                child: const Text("Buy Now"),
               ),
             ],
           ),
@@ -102,20 +123,42 @@ class _BuyNowState extends State<BuyNow> {
     );
   }
 
-  void sendEmail(String address) async {
-    final response = await http.post(
-      Uri.parse(
-          'https://earnest-pavlova-83413c.netlify.app/.netlify/functions/sendEmail'),
-      headers: {
-        'Content-Type': 'application/json',
+  void _placeOrder() async {
+    // Save order to Firestore
+    await FirebaseFirestore.instance.collection('orders').add({
+      'address': address,
+      'productName': productName,
+      'productPrice': productPrice,
+      'productDescription': productDescription,
+      'timestamp': FieldValue.serverTimestamp(),
+      // Add other order details here
+    }).then((value) {
+      // Handle successful order placement
+      print('Order placed successfully');
+      sendEmail();
+    }).catchError((error) {
+      // Handle error
+      print('Failed to place order: $error');
+    });
+  }
+
+  void sendEmail() async {
+    var url =
+        Uri.parse('https://earnest-pavlova-83413c.netlify.app/api/sendEmail');
+    var response = await http.post(
+      url,
+      body: {
+        'address': address,
+        'productName': productName,
+        'productPrice': productPrice.toString(),
+        'productDescription': productDescription,
       },
-      body: jsonEncode({'address': address}),
     );
 
     if (response.statusCode == 200) {
       print('Email sent successfully');
     } else {
-      print('Failed to send email: ${response.body}');
+      print('Failed to send email. Error: ${response.statusCode}');
     }
   }
 }
