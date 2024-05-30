@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables, avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/material.dart';
@@ -25,9 +27,9 @@ class BuyNowState extends State<BuyNow> {
 
   // Product details
 
-  double productPrice = 0;
-  String productDescription = '';
-  String productName = '';
+  var productPrice;
+  var productDescription;
+  var productName;
   @override
   void initState() {
     super.initState();
@@ -144,7 +146,7 @@ class BuyNowState extends State<BuyNow> {
 
   void sendEmail() async {
     var url = Uri.parse(
-        'https://singular-stroopwafel-0cc4b6.netlify.app/.netlify/functions/sendEmail');
+        'https://singular-stroopwafel-0cc4b6.netlify.app/netlify/functions/sendEmail');
     var response = await http.post(
       url,
       body: {
