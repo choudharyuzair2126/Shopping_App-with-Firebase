@@ -126,7 +126,7 @@ class BuyNowState extends State<BuyNow> {
   void _placeOrder() async {
     // Save order to Firestore
     await FirebaseFirestore.instance.collection('orders').add({
-      'address': address,
+      'address': address.toUpperCase(),
       'productName': productName,
       'productPrice': productPrice,
       'productDescription': productDescription,
@@ -144,7 +144,7 @@ class BuyNowState extends State<BuyNow> {
 
   void sendEmail() async {
     var url = Uri.parse(
-        'https://resilient-bavarois-303f59.netlify.app/.netlify/functions/sendEmail');
+        'https://singular-stroopwafel-0cc4b6.netlify.app/.netlify/functions/sendEmail');
     var response = await http.post(
       url,
       body: {
