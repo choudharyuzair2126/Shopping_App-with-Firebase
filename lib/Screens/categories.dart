@@ -1,3 +1,4 @@
+import 'package:app_ui/Screens/bottomnavigation.dart';
 import 'package:app_ui/Screens/cart.dart';
 import 'package:app_ui/Screens/show_category.dart';
 import 'package:app_ui/Services/ingection.dart';
@@ -37,141 +38,150 @@ class _CategoriesState extends State<Categories> {
   // var count = 0;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.blue,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('Categories'),
-              UiHelper.badge(IconButton(
-                onPressed: () {
-                  UiHelper.push1(context, const Cart());
-                },
-                icon: const Icon(Icons.shopping_cart),
-                style:
-                    const ButtonStyle(iconSize: MaterialStatePropertyAll(33)),
-              ))
-            ],
+    return WillPopScope(
+      onWillPop: () async {
+        UiHelper.pushReplacement(
+          context,
+          BottomNAvigation(index1: 0),
+        );
+        return false;
+      },
+      child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.blue,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text('Categories'),
+                UiHelper.badge(IconButton(
+                  onPressed: () {
+                    UiHelper.push1(context, const Cart());
+                  },
+                  icon: const Icon(Icons.shopping_cart),
+                  style:
+                      const ButtonStyle(iconSize: MaterialStatePropertyAll(33)),
+                ))
+              ],
+            ),
+            centerTitle: true,
+            automaticallyImplyLeading: false,
           ),
-          centerTitle: true,
-          automaticallyImplyLeading: false,
-        ),
-        body: Column(
-          children: [
-            InkWell(
-              onTap: () => UiHelper.push1(
-                  context, const ShowCategory(category: "jewelery")),
-              child: Card(
-                elevation: 3,
-                color: Colors.blue.shade300,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8.0, vertical: 3),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: Colors.purple.shade200,
-                        child: const Text('0'),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      const Text(
-                        'Jewelery',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      )
-                    ],
+          body: Column(
+            children: [
+              InkWell(
+                onTap: () => UiHelper.push1(
+                    context, const ShowCategory(category: "jewelery")),
+                child: Card(
+                  elevation: 3,
+                  color: Colors.blue.shade300,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0, vertical: 3),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.purple.shade200,
+                          child: const Text('0'),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Text(
+                          'Jewelery',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            InkWell(
-              onTap: () => UiHelper.push1(
-                  context, const ShowCategory(category: "electronics")),
-              child: Card(
-                elevation: 3,
-                color: Colors.blue.shade300,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8.0, vertical: 3),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: Colors.purple.shade200,
-                        child: const Text('1'),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      const Text(
-                        'Electronics',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      )
-                    ],
+              InkWell(
+                onTap: () => UiHelper.push1(
+                    context, const ShowCategory(category: "electronics")),
+                child: Card(
+                  elevation: 3,
+                  color: Colors.blue.shade300,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0, vertical: 3),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.purple.shade200,
+                          child: const Text('1'),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Text(
+                          'Electronics',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            InkWell(
-              onTap: () => UiHelper.push1(
-                  context, const ShowCategory(category: "women's clothing")),
-              child: Card(
-                elevation: 3,
-                color: Colors.blue.shade300,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8.0, vertical: 3),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: Colors.purple.shade200,
-                        child: const Text('2'),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      const Text(
-                        "Women's clothing",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      )
-                    ],
+              InkWell(
+                onTap: () => UiHelper.push1(
+                    context, const ShowCategory(category: "women's clothing")),
+                child: Card(
+                  elevation: 3,
+                  color: Colors.blue.shade300,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0, vertical: 3),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.purple.shade200,
+                          child: const Text('2'),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Text(
+                          "Women's clothing",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            InkWell(
-              onTap: () => UiHelper.push1(
-                  context, const ShowCategory(category: "men's clothing")),
-              child: Card(
-                elevation: 3,
-                color: Colors.blue.shade300,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8.0, vertical: 3),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: Colors.purple.shade200,
-                        child: const Text('3'),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      const Text(
-                        "Men's clothing",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      )
-                    ],
+              InkWell(
+                onTap: () => UiHelper.push1(
+                    context, const ShowCategory(category: "men's clothing")),
+                child: Card(
+                  elevation: 3,
+                  color: Colors.blue.shade300,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0, vertical: 3),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.purple.shade200,
+                          child: const Text('3'),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Text(
+                          "Men's clothing",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ));
+            ],
+          )),
+    );
   }
 }

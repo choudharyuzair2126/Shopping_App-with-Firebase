@@ -42,79 +42,85 @@ class BuyNowState extends State<BuyNow> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Buy Now"),
-      ),
-      body: Center(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          height: 600,
-          child: Column(
-            children: [
-              CSCPicker(
-                showStates: true,
-                showCities: true,
-                flagState: CountryFlag.ENABLE,
-                dropdownDecoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  color: Colors.white,
-                  border: Border.all(color: Colors.grey.shade300, width: 1),
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(context);
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Buy Now"),
+        ),
+        body: Center(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            height: 600,
+            child: Column(
+              children: [
+                CSCPicker(
+                  showStates: true,
+                  showCities: true,
+                  flagState: CountryFlag.ENABLE,
+                  dropdownDecoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    color: Colors.white,
+                    border: Border.all(color: Colors.grey.shade300, width: 1),
+                  ),
+                  disabledDropdownDecoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    color: Colors.grey.shade300,
+                    border: Border.all(color: Colors.grey.shade300, width: 1),
+                  ),
+                  countrySearchPlaceholder: "Country",
+                  stateSearchPlaceholder: "State",
+                  citySearchPlaceholder: "City",
+                  countryDropdownLabel: "*Country",
+                  stateDropdownLabel: "*State",
+                  cityDropdownLabel: "*City",
+                  disableCountry: true,
+                  defaultCountry: CscCountry.Pakistan,
+                  selectedItemStyle: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 14,
+                  ),
+                  dropdownHeadingStyle: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  dropdownItemStyle: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 14,
+                  ),
+                  dropdownDialogRadius: 10.0,
+                  searchBarRadius: 10.0,
+                  onCountryChanged: (value) {
+                    setState(() {
+                      countryValue = value;
+                    });
+                  },
+                  onStateChanged: (value) {
+                    setState(() {
+                      stateValue = value.toString();
+                    });
+                  },
+                  onCityChanged: (value) {
+                    setState(() {
+                      cityValue = value.toString();
+                    });
+                  },
                 ),
-                disabledDropdownDecoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  color: Colors.grey.shade300,
-                  border: Border.all(color: Colors.grey.shade300, width: 1),
+                ElevatedButton(
+                  onPressed: () {
+                    address = "$cityValue, $stateValue, $countryValue";
+                    _placeOrder();
+                    sendEmail(address, widget.name.toString(),
+                        widget.price.toString(), widget.description.toString());
+                  },
+                  child: const Text("Buy Now"),
                 ),
-                countrySearchPlaceholder: "Country",
-                stateSearchPlaceholder: "State",
-                citySearchPlaceholder: "City",
-                countryDropdownLabel: "*Country",
-                stateDropdownLabel: "*State",
-                cityDropdownLabel: "*City",
-                disableCountry: true,
-                defaultCountry: CscCountry.Pakistan,
-                selectedItemStyle: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 14,
-                ),
-                dropdownHeadingStyle: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold,
-                ),
-                dropdownItemStyle: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 14,
-                ),
-                dropdownDialogRadius: 10.0,
-                searchBarRadius: 10.0,
-                onCountryChanged: (value) {
-                  setState(() {
-                    countryValue = value;
-                  });
-                },
-                onStateChanged: (value) {
-                  setState(() {
-                    stateValue = value.toString();
-                  });
-                },
-                onCityChanged: (value) {
-                  setState(() {
-                    cityValue = value.toString();
-                  });
-                },
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  address = "$cityValue, $stateValue, $countryValue";
-                  _placeOrder();
-                  sendEmail(address, widget.name.toString(),
-                      widget.price.toString(), widget.description.toString());
-                },
-                child: const Text("Buy Now"),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
