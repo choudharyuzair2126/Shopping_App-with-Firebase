@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:app_ui/Screens/bottomnavigation.dart';
 import 'package:app_ui/Screens/buynow.dart';
 import 'package:app_ui/Services/uihelper.dart';

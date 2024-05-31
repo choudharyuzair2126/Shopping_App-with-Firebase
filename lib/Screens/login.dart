@@ -68,9 +68,10 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {
-        UiHelper.pushReplacement(context, Account());
+        UiHelper.pushReplacement(context, const Account());
         return false;
       },
       child: Scaffold(

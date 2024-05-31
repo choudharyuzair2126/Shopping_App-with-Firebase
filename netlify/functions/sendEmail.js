@@ -1,31 +1,43 @@
 const nodemailer = require('nodemailer');
 
-module.exports = async (req, res) => {
-  const { address, productName, productPrice, productDescription } = req.body;
-
-  if (!address || !productName || !productPrice || !productDescription) {
-    return res.status(400).json({ error: 'Missing required fields' });
-  }
-
-  let transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'choudhary14949@gmail.com',
-      pass: 'xwjj hrqr zfzs ajyl', // Use your app-specific password
-    },
-  });
-
-  let mailOptions = {
-    from: 'choudhary14949@gmail.com',
-    to: 'uzairch296@gmail.com',
-    subject: 'New Order Details',
-    text: `Address: ${address}\nProduct Name: ${productName}\nProduct Price: ${productPrice}\nProduct Description: ${productDescription}`,
-  };
-
+exports.handler = async function(event, context) {
   try {
-    await transporter.sendMail(mailOptions);
-    res.status(200).json({ message: 'Email sent successfully' });
+    const { address, productName, price, description } = JSON.parse(event.body);
+
+    if (!address || !productName || !price || !description) {
+      throw new Error('Missing order details in the request body');
+    }
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'choudhary14949@gmail.com',
+        pass: 'xwjj hrqr zfzs ajyl',
+      },
+    });
+
+    const mailOptions = {
+      from: 'choudhary14949@gmail.com',
+      to: 'uzairch296@gmail.com',
+      subject: 'New Order Received',
+      text: `New order placed!
+Address: ${address}
+Product: ${productName}
+Price: ${price}
+Description: ${description}`,
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Email sent successfully:', info);
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: 'Email sent successfully' }),
+    };
   } catch (error) {
-    res.status(500).json({ error: 'Failed to send email' });
+    console.error('Error sending email:', error.message);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: `Failed to send email: ${error.message}` }),
+    };
   }
 };

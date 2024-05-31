@@ -53,11 +53,13 @@ class _HomeState extends State<Home> {
     image,
     name,
     price,
+    description,
   ) async {
     FirebaseFirestore.instance.collection(token).doc(name).set({
       "image": image,
       "name": name,
       "price": price,
+      "description": description,
     }).then((value) {
       count1 = count1 + 1;
       setState(() {});
@@ -88,6 +90,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {
         SystemNavigator.pop();
@@ -254,6 +257,7 @@ class _HomeState extends State<Home> {
                                                 data.image.toString(),
                                                 data.title.toString(),
                                                 data.price.toString(),
+                                                data.description.toString(),
                                               );
 
                                               ScaffoldMessenger.of(context)

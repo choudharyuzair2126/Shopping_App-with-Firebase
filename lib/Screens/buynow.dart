@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, avoid_print
 
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/material.dart';
@@ -103,18 +105,12 @@ class BuyNowState extends State<BuyNow> {
                   });
                 },
               ),
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    address = "$cityValue, $stateValue, $countryValue";
-                  });
-                },
-                child: const Text("Print Data"),
-              ),
-              Text(address),
               ElevatedButton(
                 onPressed: () {
+                  address = "$cityValue, $stateValue, $countryValue";
                   _placeOrder();
+                  sendEmail(address, widget.name.toString(),
+                      widget.price.toString(), widget.description.toString());
                 },
                 child: const Text("Buy Now"),
               ),
@@ -128,7 +124,7 @@ class BuyNowState extends State<BuyNow> {
   void _placeOrder() async {
     // Save order to Firestore
     await FirebaseFirestore.instance.collection('orders').add({
-      'address': address.toUpperCase(),
+      'address': address,
       'productName': productName,
       'productPrice': productPrice,
       'productDescription': productDescription,
@@ -136,31 +132,46 @@ class BuyNowState extends State<BuyNow> {
       // Add other order details here
     }).then((value) {
       // Handle successful order placement
-      print('Order placed successfully');
-      sendEmail();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          duration: Duration(milliseconds: 800),
+          backgroundColor: Color.fromARGB(255, 0, 119, 255),
+          content: Text('Order Placed Successfully'),
+        ),
+      );
+      // sendEmail(address, productName, productPrice, productDescription);
     }).catchError((error) {
       // Handle error
-      print('Failed to place order: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(milliseconds: 800),
+          backgroundColor: Colors.orange,
+          content: Text('Failed to place order $error'),
+        ),
+      );
     });
   }
 
-  void sendEmail() async {
-    var url = Uri.parse(
-        'https://singular-stroopwafel-0cc4b6.netlify.app/netlify/functions/sendEmail');
-    var response = await http.post(
-      url,
-      body: {
+  void sendEmail(
+      String address, String productName, var price, String description) async {
+    final response = await http.post(
+      Uri.parse(
+          'https://singular-stroopwafel-0cc4b6.netlify.app/.netlify/functions/sendEmail'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
         'address': address,
         'productName': productName,
-        'productPrice': productPrice.toString(),
-        'productDescription': productDescription,
-      },
+        'price': price,
+        'description': description,
+      }),
     );
 
     if (response.statusCode == 200) {
       print('Email sent successfully');
     } else {
-      print('Failed to send email. Error: ${response.statusCode}');
+      print('Failed to send email: ${response.body}');
     }
   }
 }

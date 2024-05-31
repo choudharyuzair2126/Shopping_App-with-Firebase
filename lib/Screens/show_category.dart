@@ -43,11 +43,13 @@ class _ShowCategoryState extends State<ShowCategory> {
     image,
     name,
     price,
+    description,
   ) async {
     FirebaseFirestore.instance.collection(token).doc(name).set({
       "image": image,
       "name": name,
       "price": price,
+      "description": description,
     }).then((value) {
       count1 = count1 + 1;
       setState(() {});
@@ -63,6 +65,7 @@ class _ShowCategoryState extends State<ShowCategory> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {
         UiHelper.pushReplacement(
@@ -206,10 +209,10 @@ class _ShowCategoryState extends State<ShowCategory> {
                                             counter(count1);
 
                                             futureBuilder(
-                                              data.image.toString(),
-                                              data.title.toString(),
-                                              data.price.toString(),
-                                            );
+                                                data.image.toString(),
+                                                data.title.toString(),
+                                                data.price.toString(),
+                                                data.description.toString());
 
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
