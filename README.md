@@ -1,16 +1,40 @@
-# app_ui
 
-A new Flutter project.
+# 🛍️ Shopping App
 
-## Getting Started
+## 📌 Overview
+A **Flutter-powered shopping app** that provides a seamless e-commerce experience with a modern UI and real-time order management.
 
-This project is a starting point for a Flutter application.
+## 🚀 Features
+- **Product Catalog**: Browse a wide range of products.
+- **Shopping Cart**: Add, remove, and manage cart items.
+- **Order Management**: Place and track orders in real-time.
+- **Secure Checkout**: Integrated payment gateway support.
+- **User Authentication**: Google Sign-In & Email Authentication.
+- **Wishlist**: Save favorite products for later.
 
-A few resources to get you started if this is your first Flutter project:
+## 🛠 Tech Stack
+- **Flutter & Dart**
+- **Firebase Firestore & Authentication**
+- **State Management: Provider/Riverpod**
+- **Payment Integration: Stripe/PayPal**
+- **Animations: Lottie for Flutter**
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 📸 Screenshots
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 🔧 Installation
+```sh
+git clone https://github.com/choudharyuzair2126/shopping-app.git
+cd shopping-app
+flutter pub get
+flutter run
+```
+
+## 🔗 Repository
+[GitHub - Shopping App](https://github.com/choudharyuzair2126/shopping-app)
+
+---
+
+## 📢 Contact
+- **GitHub:** [choudharyuzair2126](https://github.com/choudharyuzair2126)
+- **Email:** [My Email](uzair2126@proton.me)
+
